@@ -7,7 +7,8 @@
   (vec (for [row (range 0 size)]
          (vec (for [col (range 0 size)]
                 {:row row, :col col, :visited? false,
-                 :bottom? true, :right? true})))))
+                 :bottom? true, :right? true,
+                 :start? (if (and (= row 0) (= col 0)) true false)})))))
 
 (defn possible-neighbors [rooms row col]
   [(get-in rooms [(- row 1) col])
@@ -63,7 +64,9 @@
     (doseq [row rooms]
       (print "|")
       (doseq [room row]
-        (print (str (if (:bottom? room) "_" " ")
+        (print (str (cond
+                      (:start? room) "o"
+                      (if (:bottom? room) "_" " "))
                     (if (:right? room) "|" " "))))
       (println))))
 
